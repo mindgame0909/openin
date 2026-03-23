@@ -1,5 +1,5 @@
 {
-  "version": "1.1.0",
-  "download_url": "https://github.com/mindgame0909/openin/releases/download/v1.1.0/OpenIn.dmg",
-  "release_notes": "Test release to verify auto-update works end-to-end."
+  "version": "1.2.0",
+  "download_url": "https://github.com/mindgame0909/openin/releases/download/v1.2.0/OpenIn.dmg",
+  "release_notes": "Auto-install updates: OpenIn now downloads, installs, and restarts itself automatically."
 }
