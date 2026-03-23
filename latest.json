@@ -1,5 +1,5 @@
 {
-  "version": "1.3.0",
-  "download_url": "https://github.com/mindgame0909/openin/releases/download/v1.3.0/OpenIn.dmg",
-  "release_notes": "Fix: update notification now appears in the menu bar immediately on launch for all users, regardless of which version they are on."
+  "version": "1.4.0",
+  "download_url": "https://github.com/mindgame0909/openin/releases/download/v1.4.0/OpenIn.dmg",
+  "release_notes": "Test: verifying fully automatic update — downloads, installs, and restarts with no manual steps."
 }
