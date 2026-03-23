@@ -1,0 +1,14 @@
+# Build output
+.build/
+*.dmg
+
+# macOS
+.DS_Store
+*.swp
+
+# Xcode / derived
+xcuserdata/
+*.xcworkspace
+
+# Secrets / local
+.env
