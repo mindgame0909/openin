@@ -32,9 +32,12 @@ class UpdateChecker {
 
     // MARK: - Public API
 
-    /// Silent background check on launch — rebuilds menu if update found
-    func checkInBackground() {
-        Task(priority: .background) { await check(notify: false) }
+    /// Silent background check on launch — calls completion if update found so the menu can be rebuilt
+    func checkInBackground(onUpdateFound: (() -> Void)? = nil) {
+        Task(priority: .background) {
+            let found = await check(notify: false)
+            if found { onUpdateFound?() }
+        }
     }
 
     /// Explicit "Check for Updates" menu action — shows result in alert

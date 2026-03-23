@@ -45,7 +45,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         setupStatusBar()
-        UpdateChecker.shared.checkInBackground()
+        UpdateChecker.shared.checkInBackground { [weak self] in
+            DispatchQueue.main.async { self?.rebuildMenu() }
+        }
     }
 
     // MARK: - Status Bar
