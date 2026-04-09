@@ -293,6 +293,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         NSApp.activate(ignoringOtherApps: true)
     }
 
+    // MARK: - File Open Handling
+    // macOS sends this when the user double-clicks an HTML file and OpenIn is
+    // the default browser. We convert the path to a file:// URL and show the picker.
+
+    func application(_ sender: NSApplication, openFiles filenames: [String]) {
+        for filename in filenames {
+            let url = URL(fileURLWithPath: filename)
+            DispatchQueue.main.async { self.handleURL(url, from: nil) }
+        }
+        sender.reply(toOpenOrPrint: .success)
+    }
+
     // MARK: - URL Event Handling
 
     private func registerURLHandler() {
