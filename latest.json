@@ -1,5 +1,5 @@
 {
-  "version": "1.4.0",
-  "download_url": "https://github.com/mindgame0909/openin/releases/download/v1.4.0/OpenIn.dmg",
-  "release_notes": "Test: verifying fully automatic update — downloads, installs, and restarts with no manual steps."
+  "version": "1.4",
+  "download_url": "https://github.com/mindgame0909/openin/releases/download/v1.4/OpenIn.dmg",
+  "release_notes": "Fix: double-clicking an HTML file now shows the browser picker instead of an error."
 }
