@@ -124,14 +124,14 @@ class BrowserManager {
     }
 
     private func openNormal(url: URL, entry: BrowserEntry, bundleID: String, appURL: URL) {
-        let config = NSWorkspace.OpenConfiguration()
-
         if let profile = entry.profile,
            entry.browser.profiles.count > 1,
-           chromiumDirs[bundleID] != nil {
-            config.arguments = ["--profile-directory=\(profile.id)"]
+           chromiumDirs[bundleID] != nil,
+           launchExecutable(appURL: appURL, args: ["--profile-directory=\(profile.id)", url.absoluteString]) {
+            return
         }
 
+        let config = NSWorkspace.OpenConfiguration()
         NSWorkspace.shared.open([url], withApplicationAt: appURL, configuration: config) { _, error in
             if let e = error { NSLog("OpenIn open error: %@", e.localizedDescription) }
         }
@@ -163,23 +163,26 @@ class BrowserManager {
         // when the browser is already running (it just activates the existing process).
         // Spawning the executable directly causes the running browser's singleton to
         // receive the args via IPC and open the incognito / private window correctly.
-        if let execName = Bundle(url: appURL)?.infoDictionary?["CFBundleExecutable"] as? String {
-            let execURL = appURL.appendingPathComponent("Contents/MacOS/\(execName)")
-            if FileManager.default.fileExists(atPath: execURL.path) {
-                let task = Process()
-                task.executableURL = execURL
-                task.arguments = args
-                do { try task.run(); return } catch {
-                    NSLog("OpenIn: Process.run failed: %@", error.localizedDescription)
-                }
-            }
-        }
+        if launchExecutable(appURL: appURL, args: args) { return }
 
         // Fallback (Safari, or any browser whose executable can't be found)
         let config = NSWorkspace.OpenConfiguration()
         config.arguments = args
         NSWorkspace.shared.openApplication(at: appURL, configuration: config) { _, err in
             if let e = err { NSLog("OpenIn incognito fallback: %@", e.localizedDescription) }
+        }
+    }
+
+    private func launchExecutable(appURL: URL, args: [String]) -> Bool {
+        guard let execName = Bundle(url: appURL)?.infoDictionary?["CFBundleExecutable"] as? String else { return false }
+        let execURL = appURL.appendingPathComponent("Contents/MacOS/\(execName)")
+        guard FileManager.default.fileExists(atPath: execURL.path) else { return false }
+        let task = Process()
+        task.executableURL = execURL
+        task.arguments = args
+        do { try task.run(); return true } catch {
+            NSLog("OpenIn: Process.run failed: %@", error.localizedDescription)
+            return false
         }
     }
 
